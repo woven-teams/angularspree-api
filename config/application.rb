@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Angspree
   class Application < Rails::Application
-    
+
     config.to_prepare do
       # Load application's model / class decorators
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
@@ -33,15 +33,15 @@ module Angspree
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
+    config.middleware.insert_before 0, Rack::Cors, :debug => true, :logger => (-> { Rails.logger }) do
       allow do
         origins '*'
 
-        resource '/cors',
-          :headers => :any,
-          :methods => [:post],
-          :credentials => true,
-          :max_age => 0
+        # resource '/cors',
+        #   :headers => :any,
+        #   :methods => [:post],
+        #   :credentials => true,
+        #   :max_age => 0
 
         resource '*',
           :headers => :any,
