@@ -1,7 +1,7 @@
 class Spree::UserSessionsController < Devise::SessionsController
   helper 'spree/base', Spree::Api::ApiHelpers
 
-  if Spree::Auth::Engine.dash_available?
+  if defined?(Spree::Dash)
     helper 'spree/analytics'
   end
 
