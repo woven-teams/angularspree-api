@@ -1,5 +1,5 @@
 # This migration comes from spree (originally 20130213191427)
-class CreateDefaultStock < ActiveRecord::Migration
+class CreateDefaultStock < ActiveRecord::Migration[4.2]
   def up
     unless column_exists? :spree_stock_locations, :default
       add_column :spree_stock_locations, :default, :boolean, null: false, default: false
@@ -7,7 +7,9 @@ class CreateDefaultStock < ActiveRecord::Migration
 
     Spree::StockLocation.skip_callback(:create, :after, :create_stock_items)
     Spree::StockLocation.skip_callback(:save, :after, :ensure_one_default)
-    Spree::StockItem.skip_callback(:save, :after, :process_backorders)
+    # Note: Had to comment out or migrations wouldn't run.
+    # I did not have this issue on Rails 4.2 for whatever reason.
+    # Spree::StockItem.skip_callback(:save, :after, :process_backorders)
     location = Spree::StockLocation.new(name: 'default')
     location.save(validate: false)
 
